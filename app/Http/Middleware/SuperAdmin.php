@@ -20,6 +20,17 @@ class SuperAdmin
             return redirect()->route('login');
         }
         $UserRole = Auth::user()->role;
-        return $next($request);
+        // super admin
+        if ($UserRole == 1) {
+            return $next($request);
+        }
+        // admin user
+        elseif ($UserRole == 2) {
+            return redirect()->route('admin.dashboard');
+        }
+        // normal user
+        elseif ($UserRole == 3) {
+            return redirect()->route('dashboard');
+        }
     }
 }

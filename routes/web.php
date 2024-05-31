@@ -21,17 +21,17 @@ Route::get('/', function () {
 //normal user
 Route::get('/dashboard', function () {
     return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified', 'user'])->name('dashboard');
 
 // admin user
 Route::get('admin/dashboard', function () {
     return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('admin.dashboard');
+})->middleware(['auth', 'verified', 'admin'])->name('admin.dashboard');
 
 //super admin
 Route::get('super-admin/dashboard', function () {
     return view('super-admin.dashboard');
-})->middleware(['auth', 'verified'])->name('super-admin.dashboard');
+})->middleware(['auth', 'verified', 'super-admin'])->name('super-admin.dashboard');
 
 
 Route::middleware('auth')->group(function () {
