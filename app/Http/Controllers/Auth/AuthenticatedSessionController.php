@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
         // admin
         elseif ($loggedInUserRole == 2) {
             return redirect()->intended(route('admin.dashboard', absolute: false));
-        };
+        }
         // normal user
         return redirect()->intended(RouteServiceProvider::HOME);
     }
