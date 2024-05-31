@@ -26,12 +26,12 @@ Route::get('/dashboard', function () {
 // admin user
 Route::get('admin/dashboard', function () {
     return view('admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('admin.dashboard');
 
 //super admin
 Route::get('super-admin/dashboard', function () {
     return view('super-admin.dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('super-admin.dashboard');
 
 
 Route::middleware('auth')->group(function () {
