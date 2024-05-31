@@ -23,22 +23,42 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
+    // public function store(LoginRequest $request): RedirectResponse
+    // {
+    //     $request->authenticate();
+
+    //     $request->session()->regenerate();
+    //     $loggedInUserRole = $request->user->role;
+    //     //super admin
+    //     if ($loggedInUserRole == 1) {
+    //         return redirect()->intended(route('super-admin.dashboard', absolute: false));
+    //     }
+    //     // admin
+    //     elseif ($loggedInUserRole == 2) {
+    //         return redirect()->intended(route('admin.dashboard', absolute: false));
+    //     }
+    //     // normal user
+    //     return redirect()->intended(RouteServiceProvider::HOME);
+    // }
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        // Authenticating the user
+        if (auth()->attempt($request->only('email', 'password'))) {
+            $request->session()->regenerate();
+            $loggedInUserRole = auth()->user()->role;
 
-        $request->session()->regenerate();
-        $loggedInUserRole = $request->user->role;
-        //super admin
-        if ($loggedInUserRole == 1) {
-            return redirect()->intended(route('super-admin.dashboard', absolute: false));
+            // Redirect based on user role
+            if ($loggedInUserRole == 1) {
+                return redirect()->route('super-admin.dashboard');
+            } elseif ($loggedInUserRole == 2) {
+                return redirect()->route('admin.dashboard');
+            } else {
+                return redirect(RouteServiceProvider::HOME);
+            }
         }
-        // admin
-        elseif ($loggedInUserRole == 2) {
-            return redirect()->intended(route('admin.dashboard', absolute: false));
-        }
-        // normal user
-        return redirect()->intended(RouteServiceProvider::HOME);
+
+        // Handle authentication failure
+        return redirect()->back()->withInput()->withErrors(['email' => 'Invalid credentials']);
     }
 
     /**
